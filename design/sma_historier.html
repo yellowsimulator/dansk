@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Små historier</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            background: white;
+            font-size: 12pt;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 25mm;
+        }
+
+        /* Title page */
+        .title-page {
+            page-break-after: always;
+            min-height: 297mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40mm 30mm;
+        }
+
+        .main-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 48pt;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20mm;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 14pt;
+            font-weight: 400;
+            color: #666;
+            margin-bottom: 10mm;
+        }
+
+        .divider {
+            width: 60mm;
+            height: 1px;
+            background: #ddd;
+            margin: 30mm auto;
+        }
+
+        /* Table of contents */
+        .toc-page {
+            page-break-after: always;
+            min-height: 297mm;
+            padding-top: 40mm;
+        }
+
+        .toc-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 24pt;
+            font-weight: 600;
+            margin-bottom: 30mm;
+            text-align: center;
+            color: #1a1a1a;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15mm;
+            font-size: 12pt;
+        }
+
+        .toc-item-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .toc-dots {
+            flex-grow: 1;
+            border-bottom: 1px dotted #ccc;
+            margin: 0 5mm;
+            position: relative;
+            top: -4px;
+        }
+
+        .toc-page-num {
+            font-family: 'Inter', sans-serif;
+            color: #666;
+        }
+
+        /* Story pages */
+        .story {
+            page-break-before: always;
+        }
+
+        .story-number {
+            font-family: 'Inter', sans-serif;
+            font-size: 10pt;
+            font-weight: 500;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10mm;
+        }
+
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 28pt;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 15mm;
+            line-height: 1.2;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 18pt;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 15mm;
+            margin-bottom: 8mm;
+            page-break-after: avoid;
+        }
+
+        p {
+            margin-bottom: 8mm;
+            text-align: justify;
+            hyphens: auto;
+            font-size: 12pt;
+            line-height: 1.8;
+        }
+
+        /* Removed drop cap effect that was making first letter too large */
+
+        .author {
+            font-family: 'Inter', sans-serif;
+            font-size: 11pt;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20mm;
+        }
+
+        /* Page numbers */
+        @page {
+            margin: 25mm;
+            @bottom-center {
+                content: counter(page);
+                font-family: 'Inter', sans-serif;
+                font-size: 10pt;
+                color: #999;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .container {
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .title-page, .toc-page, .story {
+                page-break-inside: avoid;
+            }
+
+            h1, h2 {
+                page-break-after: avoid;
+            }
+
+            p {
+                orphans: 3;
+                widows: 3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Title Page -->
+        <div class="title-page">
+            <h1 class="main-title">Små historier</h1>
+            <div class="subtitle">En samling af inspirerende fortællinger</div>
+            <div class="divider"></div>
+            <div class="subtitle" style="margin-top: auto; font-size: 11pt;">Første udgave</div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc-page">
+            <h2 class="toc-title">Indhold</h2>
+            <div class="toc-item">
+                <span class="toc-item-title">Historie 1: Design af ikoniske produkter</span>
+                <span class="toc-dots"></span>
+                <span class="toc-page-num">3</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-item-title">Historie 2: Cirkulær økonomi og reparation</span>
+                <span class="toc-dots"></span>
+                <span class="toc-page-num">8</span>
+            </div>
+            <div class="toc-item">
+                <span class="toc-item-title">Historie 3: Computationel tænkning og digital design</span>
+                <span class="toc-dots"></span>
+                <span class="toc-page-num">13</span>
+            </div>
+        </div>
+
+        <!-- Story 1 -->
+        <div class="story">
+            <div class="story-number">Historie 1</div>
+            <h1>Design af ikoniske produkter</h1>
+            <div class="author">Af Linda Nhu Laursen, Aalborg Universitet</div>
+
+            <p>Velkommen til denne fortælling om, hvordan nogle af verdens bedste designere har skabt de mest ekstraordinære ikoniske produkter. Tænk på magretheskålen, PH-lampen eller Mini Cooperen – produkter der har bevaret deres design i årtier og fortsat forbliver relevante, elskede og værdsat. Dette er produkter, vi passer på og plejer, og som vi kan påstå er mere bæredygtige end mange andre.</p>
+
+            <p>Hvordan finder designere egentlig på nye produkter? Mange kender til brainstormingsessioner med post-its, hvor man skal idégenerere bredt. Men sandheden er, at selv verdens bedste designere – top fem procent – får blokader ved overfladisk idégenerering. Deres idéer, koncepter og design er nemlig bygget på dybe indsigter.</p>
+
+            <p>Forskerne Nigel Cross og Kees Dorst lavede et fascinerende protokolstudie med ni meget professionelle designere, som alle fik den samme opgave og information. Overraskende nok kom alle ni designere frem til præcis samme idé, som de hver især syntes var dybt original. Dette viser os, at det nytænkende og originale i design ikke nødvendigvis ligger i processen, men i de indsigter og informationer vi finder.</p>
+
+            <h2>Mini Cooper – En evolution gennem tiden</h2>
+
+            <p>Mini Cooperen blev introduceret på markedet i 1957 efter Suezkrisen som en energieffektiv lille bil, der kunne rumme en hel familie. Den blev hurtigt ikonisk på det britiske marked og forblev populær i mange år.</p>
+
+            <p>I 1994 købte BMW Rover Group og fik Minien med i købet – en bil der ikke var blevet opdateret i 40 år. Udfordringen var enorm: Hvordan fornyer man et britisk ikon uden at ødelægge det? Bilen skulle opdateres inden for tre år, ellers ville den blive taget af markedet på grund af sikkerhedskrav.</p>
+
+            <p>BMW's løsning var unik og aldrig set før: De hyrede 15 designere fra hele verden, gav dem hver en måned til at designe og fem måneder til at modellere en fuld skala Mini. Designerne måtte ikke tale sammen. Efter et halvt år blev alle 15 biler udstillet, og én bil blev enstemmigt valgt – Frank Stephensons design.</p>
+
+            <p>Stephensons tilgang var revolutionerende. I stedet for at bruge hele måneden på at designe den færdige bil, opdelte han tiden i årtier. Hver uge repræsenterede ti år: 1969, 1979, 1989 og 1999. Han brugte 80% af hver uge på at researche markedet, konteksten og brugerne for det pågældende årti, og kun 20% på selve designet. Faktisk brugte han kun tre dage på at designe den endelige bil.</p>
+
+            <p>Gennem denne metode opdagede han vigtige indsigter: Folk var blevet 5 cm højere siden 1959, så kabinen skulle være højere. Køremønstrene havde ændret sig fra korte picnic-ture til længere rejser, så bagagerummet skulle være større. Og vigtigst: I 1999 var markedet fyldt med små biler, så Minien behøvede et unikt kendetegn – det blev det berømte "bulldog-look" med den karakteristiske grill og brede stance.</p>
+
+            <h2>LEGO Ninjago – At forstå børns meningsskabelse</h2>
+
+            <p>LEGO stod over for en anden udfordring: Hvordan fanger man action- og rollespilsinteresserede børn, som ikke naturligt er tiltrukket af byggeklodser? Tidligere havde de købt licenser som Star Wars, men nu ville de skabe deres eget univers.</p>
+
+            <p>Designteamet startede med at lave mock-ups af forskellige universer – ørken, undervands, pirater og mere. De viste dem til 100 børn, men ikke for at få dem til at vælge. I stedet ville de forstå, hvordan børnene skabte mening med universerne.</p>
+
+            <p>En lærerig observation kom, da en dreng placerede sin yndlingsdyr – en krokodille og en løve – i ørkenuniverset. Andre børn kunne ikke deltage i legen, fordi det ikke gav mening for dem. Teamet lærte, at et godt univers skal være tilgængeligt for mange børn, ikke kun enkelte.</p>
+
+            <p>Ved at studere succesfulde universer som Lion King og Toy Story fandt de, at de bedste historier byggede på velkendte verdener med et twist. Ninja Turtles var ninjaer der var skildpadder. Kung Fu Panda var en tyk panda med martial arts-evner.</p>
+
+            <p>Da de testede deres ninja-koncept i en moderne storby med drager som modstandere, opdagede de vigtige indsigter: Børnene elskede de futuristiske biler, men syntes det var unfair at kæmpe mod drager. Museumsartefakter som mål gav ingen mening for syvårige. Løsningen blev et gyldent sværd som mål, og dragerne skulle være på ninjaernes side, ikke imod dem.</p>
+
+            <h2>To eksperttilgange til designindsigter</h2>
+
+            <p>Disse historier illustrerer to kraftfulde tilgange til at finde unikke designindsigter:</p>
+
+            <p><strong>Første tilgang: Kom ud over dine antagelser.</strong> Som Frank Stephenson viste, skal vi researche dybt i markedet, konteksten og brugernes udvikling over tid. Hvis vi kun ser det samme som andre har set, tegner vi det samme som andre har tegnet.</p>
+
+            <p><strong>Anden tilgang: Forstå brugerens meningsskabelse.</strong> Som LEGO Ninjago-teamet demonstrerede, kan vi ikke bare spørge brugere hvad de vil have. Som Henry Ford sagde: "If I asked people what they want, they would have said a faster horse." Vi må lave prototyper og mock-ups, ikke for at få brugerne til at vælge, men for at forstå hvad der giver mening for dem, hvad de afviser, og vigtigst – hvorfor.</p>
+
+            <p>Disse to tilgange – at søge dybe, unikke indsigter og at forstå brugerens meningsskabelse – er hemmeligheden bag design af virkelig ikoniske produkter. Det er ikke nok at være kreativ; vi må forstå verden på nye måder for at skabe noget virkelig nytænkende.</p>
+
+            <h2>Opgaver til designstuderende</h2>
+
+            <p>Den første opgave handler om det, som Frank Stephenson lavede med Mini Cooperen. I skal komme ud over jeres antagelser. Jeg har sat jer til at lave tre boards. I det første board mapper I konteksten, det næste brugeren og den sidst markedet. I starter med at lave de tre, og bagefter lægger I dem til side og går ud og laver research, og så laver I dem om. I må ikke putte noget af det, som I har lavet på de første boards på de nye boards. I må kun putte jeres egen viden på og dybere indsigter og jeres egne billeder, for så får vi de unikke insights vi får noget, som I ikke umiddelbart har kunnet se.</p>
+
+            <p>Næste opgave er det, som de arbejdede med i Ninjago-teamet: At komme ind i brugerens meningsskabelse og researche et fremtidigt produkt. I skal lave nogle mock-ups, gerne en seks-syv stykker og så tager I dem ud til brugeren og får dem til at kommentere på dem. De skal ikke vælge imellem dem. Nogle skal helst være så langt ude så de synes, de er helt forfærdelige, og andre synes, de er helt fantastiske og nogle de undrer sig lidt over. I skal prøve at forstå hvordan er det, deres verden hænger sammen?</p>
+
+            <p>Jeg glæder mig rigtig meget til at se, hvad I kan få ud af de to eksperttilgange til design.</p>
+
+            <p style="text-align: center; margin-top: 30mm; font-style: italic;">Tusind tak, fordi I kiggede med i dag.</p>
+        </div>
+
+        <!-- Story 2 -->
+        <div class="story">
+            <div class="story-number">Historie 2</div>
+            <h1>Cirkulær økonomi og reparation</h1>
+            <div class="author">Af Linda Nhu Laursen, AAU Design Lab</div>
+
+            <p>Velkommen til denne fortælling om bæredygtigt design og cirkulær økonomi. Som forskningsleder ved AAU Design Lab forsker jeg i, hvordan vi kan gøre bæredygtige valg til attraktive valg. I dag skal jeg fortælle om, hvordan vi kan forlænge produktlevetid via reparation – en vigtig del af den cirkulære økonomi.</p>
+
+            <h2>Fra lineær til cirkulær økonomi</h2>
+
+            <p>For at forstå vigtigheden af reparation, må vi først se på hvordan vi producerer i dag. I den lineære økonomi tager vi råstoffer – træ, vand, metaller – og designer produkter af dem, for eksempel en stol. Produktet bliver produceret på en fabrik, sendt til distribution med lastbil, og kommer til sidst ud til os forbrugere.</p>
+
+            <p>Men når produktet går i stykker, sker der noget problematisk: Fordi mange produkter er svære at reparere, smider vi dem simpelthen ud. De ryger direkte i skraldespanden. Dette kalder vi lineær økonomi, og det er præcis det, vi skal væk fra.</p>
+
+            <p>I stedet skal vi bevæge os mod cirkulær økonomi. Her har vi stadig ressourcer, design og produktion, men når vi er færdige med at bruge produkterne, giver eller sælger vi dem videre. Andre får glæde af dem gennem genbrug. Men endnu vigtigere er reparation: Hvordan kan vi designe produkter, så de kan repareres og bruges meget længere?</p>
+
+            <p>Når vi er færdige med at bruge en stol, skal vi kunne skille den ad i sine komponenter – to stykker træ, fire stykker metal – som kan restaureres og bruges til at designe noget nyt. Det er essensen af cirkulær økonomi.</p>
+
+            <h2>Reparationsprocessens fem trin</h2>
+
+            <p><strong>Trin 1: Vurdering</strong><br/>Når et produkt går i stykker, for eksempel en iPhone, vurderer vi først om det er værd at reparere. Her støder vi på teknologisk forældelse – er det en gammel model hvor appsene ikke længere virker? Vi overvejer også økonomisk forældelse – koster reservedelene næsten det samme som at købe nyt? Hvis ja, vælger mange desværre at købe nyt.</p>
+
+            <p><strong>Trin 2: At åbne produktet</strong><br/>Her løber vi ind i massive problemer. Moderne produkter er designet, så de er svære at åbne – de umyndiggør faktisk forbrugerne. Lad mig give nogle eksempler på problematiske samlinger:</p>
+
+            <p><em>Limsamlinger:</em> Produkter der er limet sammen kan simpelthen ikke åbnes uden ødelæggelse. Jeg har holdt repair café, hvor nogle drenge brugte 45 minutter på at åbne sådan et produkt og endte med at bruge en sav. Men når man bruger sav, kan produktet ikke samles igen.</p>
+
+            <p><em>Skjulte samlinger:</em> Skruer gemt bag plastikdutter der skal brækkes af for at komme til. Når de først er pillet af, kan de ikke sættes tilbage uden lim.</p>
+
+            <p><em>Tryksamlinger:</em> Kræver specialværktøj og risikerer at gå i stykker når man åbner dem. Plastikken knækker ofte, og så kan produktet ikke restaureres.</p>
+
+            <p><em>Specialskruer:</em> Som dem i iPhones – kræver særligt værktøj som de færreste har.</p>
+
+            <p>Men der findes også gode samlinger! Synlige kliksamlinger hvor man let kan komme til batteriet, og helt almindelige skruesamlinger der kan åbnes med standardværktøj. Det er sådan noget, vi skal købe produkter efter.</p>
+
+            <p><strong>Trin 3: Diagnosticering</strong><br/>Når produktet er åbent, skal vi finde fejlen. Ved statiske produkter som tøj eller møbler er det let – der er et hul i trøjen eller et knækket ben på stolen. Mekaniske produkter som cykler kan også være relativt simple at diagnosticere – er kæden hoppet af eller dækket fladt? Men elektroniske produkter kræver ofte specialviden.</p>
+
+            <p><strong>Trin 4: Reservedele</strong><br/>Nu skal vi skaffe de nødvendige dele. Her støder vi igen på økonomisk forældelse – hvis reservedelene er dyrere end et nyt produkt, vælger folk at smide det gamle ud.</p>
+
+            <p><strong>Trin 5: Restaurering</strong><br/>Det sidste trin er at samle produktet igen. Som jeg oplevede med fjernbetjeningen, turde jeg slet ikke skille den ad, fordi jeg vidste, jeg ikke kunne samle den igen.</p>
+
+            <h2>Opgave: Undersøg reparerbarhed</h2>
+
+            <p>Jeg vil gerne have jer til at undersøge reparerbarhed i praksis. Find et produkt der er gået i stykker – en computermus, et tastatur, eller noget andet. Husk følgende sikkerhedsregler: Spørg jeres lærer om det er et produkt I må åbne. Tag det ud af stikkontakten først. Åbn aldrig batterier.</p>
+
+            <p>Undersøg hvilke dele produktet består af. I kan google komponenterne for at forstå deres funktion. Dokumenter processen som de studerende på Industrielt Design gør: De tager et produkt som en hårtørrer og finder ud af hvilke dele den består af, hvilket værktøj der skal bruges for at skille den ad, og hvilke barrierer de møder.</p>
+
+            <p>For hvert trin noterer de: "I trin 1 gjorde jeg dette", "I trin 2 prøvede jeg at pille filteret af", "Trin 5 kræver et specielt bitssæt". De kortlægger alle barrierer – er det værktøjet? Er samlingerne svære at adskille? De fortsætter til produktet er helt skilt ad, og limer så alle dele op på en planche.</p>
+
+            <p>Gennem denne øvelse lærer vi om produktviden, gode og dårlige samlinger, og produktets komponenter. På universitetet er næste skridt at redesigne produktet, så det bliver lettere at reparere i forhold til cirkulær økonomi.</p>
+
+            <p>Det er gennem sådanne praktiske undersøgelser, vi kan bidrage til en mere bæredygtig fremtid, hvor produkter designes til at kunne repareres, genbruges og recirkuleres.</p>
+
+            <p style="text-align: center; margin-top: 30mm; font-style: italic;">God fornøjelse med opgaven. Tak, fordi I så med.</p>
+        </div>
+
+        <!-- Story 3 -->
+        <div class="story">
+            <div class="story-number">Historie 3</div>
+            <h1>Computationel tænkning og digital design</h1>
+            <div class="author">Af Christian Ravn-Haslam, Center for IT-ledelse, Aalborg Universitet</div>
+
+            <p>Hej og velkommen. Som forsker og underviser ved Center for IT-ledelse på Aalborg Universitet arbejder jeg med digitalisering og udvikling af digitale løsninger. I dag vil jeg tale om, hvad det vil sige at designe en digital løsning, og særligt om computationel tænkning – de færdigheder vi har brug for, når vi skal udvikle og designe gode digitale løsninger.</p>
+
+            <h2>Digitale systemer i vores hverdag</h2>
+
+            <p>Digitale systemer er blevet en integreret del af vores liv og samfund. Vi bruger vores smartphones til stort set alt – handel, underholdning, kommunikation. Det samme gælder for virksomheder, som bruger digitale teknologier i næsten alle aspekter af deres arbejde. Dette skaber stor interesse for at udvikle gode løsninger, der kan hjælpe virksomheder med at forbedre processer og gøre ting hurtigere, billigere og mere effektive.</p>
+
+            <p>Men hvad er egentlig en digital løsning? Først og fremmest er det et stykke software, men ofte er det langt mere komplekst end et enkelt program. Det består typisk af mange forskellige systemer – både nye og eksisterende. Virksomheder har over tid investeret mange penge i forskellige IT-systemer, og de er naturligvis ikke interesserede i at erstatte alt, hver gang der kommer noget nyt. De vil gerne genbruge de systemer og data, de allerede har.</p>
+
+            <p>Dette stiller store krav til designeren. Man skal ikke kun forholde sig til, hvad organisationen har behov for, men også til hvilke systemer og data de allerede har, samt hvilke nye teknologier der kunne skabe værdi. En digital løsning kan derfor defineres som en mængde eksisterende eller nye systemer, som tilsammen løser en specifik opgave eller et problem for organisationen.</p>
+
+            <h2>Kompleksiteten i simple opgaver</h2>
+
+            <p>Det viser sig ofte, at selv tilsyneladende simple opgaver gemmer enorm kompleksitet. I de fleste organisationer er det mange forskellige medarbejdere, der skal bruge løsningerne, hver med forskellige ønsker og behov til systemet.</p>
+
+            <p>For at arbejde med dette skal vi først forstå, hvad organisationen har behov for – dykke ned i det og bryde det ned i noget, vi kan arbejde med. Dernæst skal vi designe det på en måde, så det kan implementeres i IT-systemer. Her støder vi på en fundamental udfordring: oversættelsen mellem to meget forskellige sprog.</p>
+
+            <h2>Fra naturligt sprog til formelt sprog</h2>
+
+            <p>Når man taler med en organisation om deres behov, bruger de deres eget naturlige sprog. En bank taler om bankkonti, rentetilskrivninger og afkast. En butik taler om varelager, kunderabatter og leveringstider. Men IT-systemer arbejder med formelle sprog – programmeringssprog, der udspringer af matematik. De er meget stive og præcise, uden plads til fortolkning.</p>
+
+            <p>Som designere må vi tale begge sprog. Vi må forstå brugernes sprog og ønsker, og vi må forstå computerens sprog og måde at arbejde på. Indenfor forskningen taler vi om at oversætte mellem to vidensdomæner:</p>
+
+            <p><strong>Problemdomænet:</strong> Det domæne der eksisterer i virksomheden, hvor man taler i naturligt sprog om virksomhedens udfordringer og behov.</p>
+
+            <p><strong>Løsningsdomænet:</strong> Det domæne hvor vi arbejder på computerens præmisser, hvor problemet skal udtrykkes i programmeringssprog eller andre formelle sprog.</p>
+
+            <p>Opgaven går ud på at forstå, hvad der foregår i problemdomænet og bruge den viden til at lave et design i løsningsdomænet – vi oversætter fra naturligt til formelt sprog.</p>
+
+            <h2>De fire færdigheder i computationel tænkning</h2>
+
+            <p>Computationel tænkning er de færdigheder, vi har brug for til at lave denne oversættelse. Det består af fire centrale færdigheder:</p>
+
+            <p><strong>1. Decomposition (Analyse):</strong> Evnen til at analysere et problem og bryde det ned i mindre, håndterbare dele. Vi tager noget fra problemdomænet og opdeler det, så det bliver til at arbejde med.</p>
+
+            <p><strong>2. Mønstergenkendelse:</strong> Når vi har brudt problemet ned, kigger vi efter mønstre. Er der ting der gentager sig? Kan vi gruppere elementer? Er der noget der kan gøres smartere?</p>
+
+            <p><strong>3. Abstraction (Abstraktion):</strong> Vi sorterer og prioriterer i de elementer, vi har identificeret. Vi vælger de ting, som er væsentlige for opgaven og fjerner det, som bare er fyld og ikke strengt nødvendigt. Vi skærer det ned til det mest basale.</p>
+
+            <p><strong>4. Algoritmedesign (Syntese):</strong> Her tager vi de elementer, der er tilbage efter vi har brudt ned, sorteret og prioriteret. Nu skal vi bygge det op igen, men denne gang inden for løsningsdomænet – i en form computeren kan forstå.</p>
+
+            <h2>Processen illustreret</h2>
+
+            <p>Processen kan visualiseres således: Vi starter med et problem i problemdomænet. Gennem decomposition bryder vi det ned i mindre bestanddele. Vi bearbejder disse data ved at kigge efter mønstre og lave abstraktion – prioritere de forskellige elementer. Til sidst laver vi syntesen gennem algoritmer, hvilket giver os vores løsning i løsningsdomænet.</p>
+
+            <p>Vi bevæger os altså fra problemdomænet med naturligt sprog til løsningsdomænet med formelt sprog. Denne oversættelse er kernen i digital design.</p>
+
+            <h2>Den skjulte kompleksitet</h2>
+
+            <p>Selvom princippet lyder simpelt – at forstå noget i den virkelige verden og oversætte det til computersystemer – så er det i praksis meget svært. Man skal forstå begge domæner godt for at kunne lave oversættelsen, og selv simple opgaver gemmer ofte enorm kompleksitet.</p>
+
+            <p>En lille virksomhed med få medarbejdere og en tilsyneladende simpel opgave kan vise sig at dække over masse underliggende kompleksitet, som er svær at arbejde med og prioritere for at kunne lave en god digital løsning.</p>
+
+            <h2>Opgave: Øv computationel tænkning</h2>
+
+            <p>For at demonstrere dette har jeg forberedt et opgavesæt, hvor I kan arbejde med at bryde simple hverdagsopgaver ned i forskellige bestanddele. Prøv at forestille jer, hvad det vil sige at skære det så meget ud i pap, at det kan bruges til at bygge et computersystem.</p>
+
+            <p>Husk at computere er noget af det dummeste, vi har. De gør præcis det, de bliver bedt om – hverken mere eller mindre. Der er ingen plads til fortolkning, ingen ræsonnement eller selvstændig tanke. Computeren gør det, den får at vide, og ikke andet.</p>
+
+            <p>Dette betyder, at man må bryde opgaver ned i meget små bidder, så selv en "dum" computer kan følge instruktionerne. Tag udgangspunkt i en hverdagshandling – helst noget simpelt. I vil forhåbentlig opdage, at det hurtigt bliver enormt komplekst og omfattende, når man begynder at bryde det ned. Hvis ikke det gør det, så spørg jer selv: Har jeg brudt det ned i små nok bidder, så selv en computer kan forstå det?</p>
+
+            <p>Det var det, jeg gerne ville fortælle om i dag. Jeg håber, det har givet inspiration og lyst til at lege med at designe systemer og tænke computationelt.</p>
+        </div>
+    </div>
+</body>
+</html>

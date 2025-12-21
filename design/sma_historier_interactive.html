@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Små historier - Interaktiv version</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', Georgia, serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            background: #f5f5f5;
+            font-size: 18px;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-width: 250px;
+        }
+
+        .nav h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .nav ul {
+            list-style: none;
+        }
+
+        .nav li {
+            margin-bottom: 10px;
+        }
+
+        .nav a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #f0f0f0;
+        }
+
+
+        /* Story content */
+        h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 36px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .story {
+            margin-bottom: 80px;
+            scroll-margin-top: 20px;
+        }
+
+        .story-number {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .author {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .video-container {
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .video-link a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        .video-link a:hover {
+            color: #ff0000;
+            text-decoration: underline;
+        }
+
+        .video-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .video-toggle button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-toggle button:hover {
+            background: #cc0000;
+        }
+
+        .video-toggle button:before {
+            content: "▶";
+            font-size: 12px;
+        }
+
+        .video-section {
+            margin-bottom: 35px;
+        }
+
+        .video-section.collapsed .video-container {
+            display: none;
+        }
+
+        .video-section.collapsed .video-toggle button:before {
+            content: "▶";
+        }
+
+        .video-section:not(.collapsed) .video-toggle button:before {
+            content: "▼";
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+            user-select: text;
+            cursor: default;
+            transition: background-color 0.2s ease;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        p:hover {
+            background-color: rgba(74, 175, 80, 0.08);
+        }
+
+        /* Instructions */
+        .instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin-bottom: 40px;
+            border-radius: 5px;
+        }
+
+        .instructions h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #1976D2;
+        }
+
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Language toggle */
+
+        strong {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        em {
+            font-style: italic;
+            color: #555;
+        }
+
+        @media (max-width: 1200px) {
+            .nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            body {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <h3>Indhold</h3>
+        <ul>
+            <li><a href="#historie1">Historie 1: Design af ikoniske produkter</a></li>
+            <li><a href="#historie2">Historie 2: Cirkulær økonomi</a></li>
+            <li><a href="#historie3">Historie 3: Computationel tænkning</a></li>
+        </ul>
+    </div>
+
+
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 50px; font-size: 48px;">Små historier</h1>
+
+        <!-- Story 1 -->
+        <div class="story" id="historie1">
+            <div class="story-number">Historie 1</div>
+            <h1>Design af ikoniske produkter</h1>
+            <div class="author">Af Linda Nhu Laursen, Aalborg Universitet</div>
+
+            <div class="video-section" id="video1">
+                <div class="video-toggle">
+                    <button onclick="toggleVideo('video1')">Se video præsentation</button>
+                </div>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <iframe
+                            src="https://www.youtube.com/embed/JKVemDk9SWQ"
+                            title="Design af ikoniske produkter - Linda Nhu Laursen"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-link">
+                        <a href="https://youtu.be/JKVemDk9SWQ" target="_blank">Åbn i YouTube</a>
+                    </div>
+                </div>
+            </div>
+
+            <p>Velkommen til denne fortælling om, hvordan nogle af verdens bedste designere har skabt de mest ekstraordinære ikoniske produkter. Tænk på magretheskålen, PH-lampen eller Mini Cooperen – produkter der har bevaret deres design i årtier og fortsat forbliver relevante, elskede og værdsat. Dette er produkter, vi passer på og plejer, og som vi kan påstå er mere bæredygtige end mange andre.</p>
+
+            <p>Hvordan finder designere egentlig på nye produkter? Mange kender til brainstormingsessioner med post-its, hvor man skal idégenerere bredt. Men sandheden er, at selv verdens bedste designere – top fem procent – får blokader ved overfladisk idégenerering. Deres idéer, koncepter og design er nemlig bygget på dybe indsigter.</p>
+
+            <p>Forskerne Nigel Cross og Kees Dorst lavede et fascinerende protokolstudie med ni meget professionelle designere, som alle fik den samme opgave og information. Overraskende nok kom alle ni designere frem til præcis samme idé, som de hver især syntes var dybt original. Dette viser os, at det nytænkende og originale i design ikke nødvendigvis ligger i processen, men i de indsigter og informationer vi finder.</p>
+
+            <h2>Mini Cooper – En evolution gennem tiden</h2>
+
+            <p>Mini Cooperen blev introduceret på markedet i 1957 efter Suezkrisen som en energieffektiv lille bil, der kunne rumme en hel familie. Den blev hurtigt ikonisk på det britiske marked og forblev populær i mange år.</p>
+
+            <p>I 1994 købte BMW Rover Group og fik Minien med i købet – en bil der ikke var blevet opdateret i 40 år. Udfordringen var enorm: Hvordan fornyer man et britisk ikon uden at ødelægge det? Bilen skulle opdateres inden for tre år, ellers ville den blive taget af markedet på grund af sikkerhedskrav.</p>
+
+            <p>BMW's løsning var unik og aldrig set før: De hyrede 15 designere fra hele verden, gav dem hver en måned til at designe og fem måneder til at modellere en fuld skala Mini. Designerne måtte ikke tale sammen. Efter et halvt år blev alle 15 biler udstillet, og én bil blev enstemmigt valgt – Frank Stephensons design.</p>
+
+            <p>Stephensons tilgang var revolutionerende. I stedet for at bruge hele måneden på at designe den færdige bil, opdelte han tiden i årtier. Hver uge repræsenterede ti år: 1969, 1979, 1989 og 1999. Han brugte 80% af hver uge på at researche markedet, konteksten og brugerne for det pågældende årti, og kun 20% på selve designet. Faktisk brugte han kun tre dage på at designe den endelige bil.</p>
+
+            <p>Gennem denne metode opdagede han vigtige indsigter: Folk var blevet 5 cm højere siden 1959, så kabinen skulle være højere. Køremønstrene havde ændret sig fra korte picnic-ture til længere rejser, så bagagerummet skulle være større. Og vigtigst: I 1999 var markedet fyldt med små biler, så Minien behøvede et unikt kendetegn – det blev det berømte "bulldog-look" med den karakteristiske grill og brede stance.</p>
+
+            <h2>LEGO Ninjago – At forstå børns meningsskabelse</h2>
+
+            <p>LEGO stod over for en anden udfordring: Hvordan fanger man action- og rollespilsinteresserede børn, som ikke naturligt er tiltrukket af byggeklodser? Tidligere havde de købt licenser som Star Wars, men nu ville de skabe deres eget univers.</p>
+
+            <p>Designteamet startede med at lave mock-ups af forskellige universer – ørken, undervands, pirater og mere. De viste dem til 100 børn, men ikke for at få dem til at vælge. I stedet ville de forstå, hvordan børnene skabte mening med universerne.</p>
+
+            <p>En lærerig observation kom, da en dreng placerede sin yndlingsdyr – en krokodille og en løve – i ørkenuniverset. Andre børn kunne ikke deltage i legen, fordi det ikke gav mening for dem. Teamet lærte, at et godt univers skal være tilgængeligt for mange børn, ikke kun enkelte.</p>
+
+            <p>Hvordan får man lavet spilleregler, der er attraktive for rigtig mange børn og hvor de har en tilgængelighed? De begyndte at undersøge nogle af Disneys mest populære universer. En af de meste sete film er Lion King, en anden er Toy Story, og de fandt ud af at det er nogle velkendte universer for børnene. Toy Story eksisterer jo på børneværelset, og det kender alle børn. Lion King handler om løvefamilien, og den minder om menneskefamilien.</p>
+
+            <p>De fandt også ud af, at hvis historierne kan sælge i legetøjsverdenen så skal de have et tweak. På det tidspunkt var Ninja Turtles meget fremme og Kung Fu Panda. De har begge et ninjatema, og det ene er med skildpadder så det er rigtig meget tweak, og Kung Fu Panda er en tyk panda som har sin helt egen identitet. De prøvede at sige: "Okay, hvordan kan vi tage nogle universer..." De fandt ud af ved den første test, at ninjatemaet var ret interessant. "Hvordan kan vi give det et tweak?" De lavede forskellige ninjatemaer hvor det ene var i en moderne storby hvor ninjaerne skulle slås mod nogle kæmpe drager og museumsartefakter.</p>
+
+            <p>De kørte rundt i futuristiske biler. De fandt ud af at børnene synes, det var mega sejt, at ninjaerne kørte rundt i futuristiske biler, men de fandt også ud af, at børnene syntes det var meget unfair at slås mod drager, for hvilken syvårig vil slås mod en drage? De fattede ikke rigtig missionen, og hvorfor nogen skulle være interesseret i museumsartefakter. Det er kun voksne, der er interesseret i sådan noget.</p>
+
+            <p>Det med at komme ind i brugerens meningsskabelse og finde ud af, hvad der giver mening for et barn på syv til ni år. De fandt ud af, at det, de skulle slås om, var selvfølgelig et gyldent sværd. Dragerne skulle selvfølgelig være på ninjaernes hold. De skulle selvfølgelig ikke være imod ninjaerne.</p>
+
+            <h2>To eksperttilgange til design</h2>
+
+            <p>Det er faktisk nummer to tilgang, jeg vil fortælle jer om. Det handler om, at vi skal lave mock-ups og prototyper og vi kan ikke spørge brugere, specielt ikke børn om, hvad de vil have. Det er ligesom Henry Fords citat: "If I asked people what they want they would have said a faster horse." Vi er nødt til at lave forslag på hvad kunne det være, og så handler det ikke om at få valgt et af de forslag. Det handler om at finde ud af hvilket af forslagene giver mening for dem, hvad hooker de på? Hvad rejecter de? Og så spørge "hvorfor?" Hvorfor rejecter børnene dragerne? Det er da, fordi det ikke er særlig sjovt at kæmpe mod en drage. Det er de to eksperttilgange jeg ville dele med jer i dag og dem, I skal arbejde med i opgaven.</p>
+
+            <h2>Opgaver</h2>
+
+            <p>Den første opgave handler om det, som Frank Stephenson lavede med Mini Cooperen. I skal komme ud over jeres antagelser. Jeg har sat jer til at lave tre boards. I det første board mapper I konteksten, det næste brugeren og den sidst markedet. I starter med at lave de tre, og bagefter lægger I dem til side og går ud og laver research, og så laver I dem om. I må ikke putte noget af det, som I har lavet på de første boards på de nye boards. I må kun putte jeres egen viden på og dybere indsigter og jeres egne billeder, for så får vi de unikke insights vi får noget, som I ikke umiddelbart har kunnet se.</p>
+
+            <p>Næste opgave er det, som de arbejdede med i Ninjago-teamet: At komme ind i brugerens meningsskabelse og researche et fremtidigt produkt. I skal lave nogle mock-ups, gerne en seks-syv stykker og så tager I dem ud til brugeren og får dem til at kommentere på dem. De skal ikke vælge imellem dem. Nogle skal helst være så langt ude så de synes, de er helt forfærdelige, og andre synes, de er helt fantastiske og nogle de undrer sig lidt over. I skal prøve at forstå hvordan er det, deres verden hænger sammen?</p>
+
+            <p>Jeg glæder mig rigtig meget til at se, hvad I kan få ud af de to eksperttilgange til design.</p>
+
+            <p style="text-align: center; margin-top: 30mm; font-style: italic;">Tusind tak, fordi I kiggede med i dag.</p>
+        </div>
+
+        <!-- Story 2 -->
+        <div class="story" id="historie2">
+            <div class="story-number">Historie 2</div>
+            <h1>Cirkulær økonomi og reparation</h1>
+            <div class="author">Af Linda Nhu Laursen, AAU Design Lab</div>
+
+            <div class="video-section" id="video2">
+                <div class="video-toggle">
+                    <button onclick="toggleVideo('video2')">Se video præsentation</button>
+                </div>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <iframe
+                            src="https://www.youtube.com/embed/lvvLjeCIpa8"
+                            title="Cirkulær økonomi og reparation - Linda Nhu Laursen"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-link">
+                        <a href="https://youtu.be/lvvLjeCIpa8" target="_blank">Åbn i YouTube</a>
+                    </div>
+                </div>
+            </div>
+
+            <p>Velkommen til AAU Play. Jeg hedder Linda og er forskningsleder ved AAU Design Lab. Jeg forsker i bæredygtigt design og cirkulær økonomi. Det handler om at gøre bæredygtige valg til attraktive valg. I dag skal jeg fortælle om, hvordan vi kan forlænge produktlevetid via reparation.</p>
+
+            <p>Men først om, hvorfor det er vigtigt at reparere. Når vi laver produkter i dag, så tager vi nogle råstoffer. Nu tegner jeg et træ her. Og noget vand. Så sker der ofte det, at vi tager råstofferne og designer noget ud af dem. Vi kan for eksempel designe en stol. Det er design.</p>
+
+            <p>Det bliver produceret på en fabrik. Så hvis vi har produktionen her ... Yes. Og fra fabrikken bliver det sendt til distribution. Typisk med en lastbil. Det bliver sendt ud. Og så kommer det ud til os forbrugere.</p>
+
+            <p>Når vi forbrugere har et eller andet, der går i stykker - så det, der sker i dag, fordi mange produkter er svære at reparere, er - at vi faktisk bare smider dem ud. De ryger lige ned i skraldespanden. Det kalder vi lineær økonomi, og det er det, vi skal væk fra.</p>
+
+            <p>Det, jeg gerne vil hen til, er det, vi kalder cirkulær økonomi. Vi har nogle ressourcer. De kommer ind. Vi design og producerer stadigvæk. Og det skal stadig sendes ud til forbrugerne. Men i stedet for at smide produkterne ud vil jeg gerne have - at hvis du er færdig med at bruge det, at du giver eller sælger det videre.</p>
+
+            <p>Her er en pakke, som en anden får glæde af. Så vi forsker i eksempelvis genbrug. Men det, jeg også gerne vil, handler om reparation. Hvilke barrierer er der for at reparere produkterne og bruge dem meget længere? Hvordan kan vi lave produkterne, så, når vi er færdige med at bruge stolen - at vi kan skille den ad, så der ligger to stykker træ og fire stykker metal? Så kan vi måske bruge dem her, restaurere dem og designe noget nyt. Vi skal tale om cirkulær økonomi og særligt om reparationer.</p>
+
+            <h2>Reparationsprocessens fem faser</h2>
+
+            <p>Det, vi først gør, når vi har et produkt, som er gået i stykker - eksempel en iPhone, er at kigge på, hvad det koster at reparere den. Er den værd at reparere?</p>
+
+            <p>Noget, jeg vil kigge på, er teknologisk forældelse. Er det en gammel iPhone eller den her Nokia, vil jeg tænke: "Måske kan det ikke rigtigt betale sig, fordi appsene ikke virker." Jeg kunne også tænke: "Hvad koster reservedelene?" Vi kalder det økonomisk forældelse - hvis reservedelene næsten koster det samme som at købe nyt. Så går mange af os ud og køber en ny.</p>
+
+            <p>Men når vi er færdige med første fase - vurderingen af, om det er værd at reparere - så er det næste at kunne åbne produktet. Her løber vi ind i en masse problemer. Fordi produkter i dag er designet, så de er svære at åbne. De umyndiggør faktisk folk.</p>
+
+            <h2>Problematiske samlingstyper</h2>
+
+            <p>Sådan et produkt som det her har en limsamling. Det vil sige, at jeg faktisk ikke kan åbne den. Jeg har holdt en repair cafe, og der var nogle drenge - der brugte 45 minutter på at åbne den, og de endte med en sav. Hvis man ender med en sav, så kan man ikke restaurere den igen.</p>
+
+            <p>En anden type samling er skjulte samlinger. For eksempel den her. Der kan I se, at skruen er skjult omme bag en eller anden plastikdut. De er heller ikke gode samlinger, fordi når først man har pillet det her af - kan man ikke restaurere det igen. Så skal man have lim på.</p>
+
+            <p>Så er der en tredje type samling, der hedder tryksamlinger. Der skal man bruge noget specialværktøj som det her. Så skal vi prøve at se, om vi kan skille det ad. Det bliver lidt noget juks. Hvis vi først får skilt den ad ... I kan næsten høre det. Den er af plastik. Jeg er lidt bange for, at den går i stykker. Kan man så restaurere den?</p>
+
+            <p>Så er der produkter som iPhonen, der har specialskruer. De her. Sådan en skruetrækker har vi ikke. Så skal man have et specielt værktøjssæt for at komme ind i den.</p>
+
+            <h2>Gode samlinger</h2>
+
+            <p>Men der er også gode samlinger. Det er noget, vi skal købe produkter efter. Det her har en god, synlig kliksamling. Hvis jeg trykker ned her, kan jeg åbne den og komme ind til batteriet. Forholdsvist enkelt. Så er der de helt gode samlinger. Helt almindelige skruesamlinger som her. Vi kan åbne den med et standardværktøj.</p>
+
+            <p>Alle de her barrierer for, at vi kan reparere produkterne ... Det ene er, om vi kan åbne det op. Når vi har åbnet det op, handler det næste om at diagnosticere.</p>
+
+            <h2>Diagnosticering af problemer</h2>
+
+            <p>Det er tredje skridt i processen. Har vi et statisk produkt - altså enkle produkter som eksempelvis et stykke tøj eller møbler - kan vi ret hurtigt diagnosticere, hvad der er galt. Der er et hul i trøjen, så vi har syet en lap. Eller benet er knækket på stolen, så derfor skal vi have repareret det.</p>
+
+            <p>Vi kan også have mekaniske produkter. For eksempel en cykel. Det kan også være mere komplekse produkter som ure. Men med mekaniske produkter kan det være let - afhængig af kompleksiteten, at finde ud af, hvad der er galt. Når du kigger på din cykel, ved du - om kæden er hoppet af, eller dækket er fladt. Så næste skridt er, om vi kan diagnosticere det.</p>
+
+            <h2>Reservedele og reparation</h2>
+
+            <p>Step fire handler om, at vi skal fikse det her produkt. Hvilke reservedele mangler? Kan vi bestille dem hjem? Nogle gange er reservedelene dyre, og de kan være dyrere end at købe nyt. Så vælger folk tit at smide det ud, og det kalder vi økonomisk forældelse.</p>
+
+            <p>Hvis vi har formået at tage produktet, åbne det, diagnosticere det - og bestille reservedele hjem, så er det sidste at restaurere det. Det var det, jeg prøvede med fjernbetjeningen. Jeg turde ikke engang at skille den ad. Det er alle de skridt, der er i en reparationsproces.</p>
+
+            <h2>Praktisk opgave: Undersøg reparerbarhed</h2>
+
+            <p>Det, vi skal undersøge, og som jeg har taget med i opgavesættet - er det samme, som vi forsker i. Hvilke produkter er gode at reparere - hvilke er dårlige at reparere, og hvilke barrierer er der i processen?</p>
+
+            <p>Jeg vil gerne have jer til først at finde et produkt, der er gået i stykker. Det kan være en computermus, et tastatur, alt muligt andet. Husk at spørge jeres lærer, om det er et produkt, I godt må åbne op. Pil det ud af stikkontakten. Man åbner ikke produkter, der sidder deri. Åbn heller ikke batterier. Men spørg jeres lærer.</p>
+
+            <p>Når I har gjort det, så er det næste at finde ud af - hvilke dele det her produkt består af. Her har jeg taget en planche med, som nogen har lavet. De har skilt en computermus ad for at se, hvilke dele den består af. Det googler I bare. Find ud af, hvad delene gør, og hvordan de er.</p>
+
+            <h2>Dokumentation af reparationsprocessen</h2>
+
+            <p>Det, I ellers kan gøre i processen ... Jeg har taget en opgave med. Det her lavede de den første uge på Industrielt Design på AAU. De har taget en hårtørrer og fundet ud af, hvilke dele den består af. Og så har de fundet ud af, hvad de skal bruge for at dekonstruere den. Altså skille den ad. Hvilket værktøj skal bruges? Og hvilke barrierer er der?</p>
+
+            <p>Så har de taget hvert step: "I step et gjorde jeg det her." "I step to prøvede jeg at pille filteret af." "Step fem kræver et specielt bitssæt." Så de mapper alle barriererne. "Er det værktøjet? Er det svært at skille ad?" Hele vejen ned, indtil de har fået skilt den fuldstændig ad til atomer. Og så limer de det op på en planche.</p>
+
+            <p>Det, vi lærer, er en masse produktviden og om gode og dårlige samlinger. Vi får viden om produktets komponenter, og hvad der virker. Hvis I kommer ind på universitetet, er næste opgave så at redesigne den. Hvis den går i stykker, hvordan kunne vi så redesigne den - så den i forhold til den cirkulære økonomi var nemmere at skille ad?</p>
+
+            <p style="text-align: center; margin-top: 30mm; font-style: italic;">God fornøjelse med opgaven. Tak, fordi I så med.</p>
+        </div>
+
+        <!-- Story 3 -->
+        <div class="story" id="historie3">
+            <div class="story-number">Historie 3</div>
+            <h1>Computationel tænkning og digital design</h1>
+            <div class="author">Af Christian Ravn-Haslam, Center for IT-ledelse, Aalborg Universitet</div>
+
+            <div class="video-section" id="video3">
+                <div class="video-toggle">
+                    <button onclick="toggleVideo('video3')">Se video præsentation</button>
+                </div>
+                <div class="video-container">
+                    <div class="video-wrapper">
+                        <iframe
+                            src="https://www.youtube.com/embed/6MBhh9In8ic"
+                            title="Computationel tænkning og digital design - Christian Ravn-Haslam"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-link">
+                        <a href="https://youtu.be/6MBhh9In8ic" target="_blank">Åbn i YouTube</a>
+                    </div>
+                </div>
+            </div>
+
+            <p>Hej og velkommen. Som forsker og underviser ved Center for IT-ledelse på Aalborg Universitet arbejder jeg med digitalisering og udvikling af digitale løsninger. I dag vil jeg tale om, hvad det vil sige at designe en digital løsning, og særligt om computationel tænkning – de færdigheder vi har brug for, når vi skal udvikle og designe gode digitale løsninger.</p>
+
+            <h2>Digitale systemer i vores hverdag</h2>
+
+            <p>Digitale systemer er blevet en integreret del af vores liv og samfund. Vi bruger vores smartphones til stort set alt – handel, underholdning, kommunikation. Det samme gælder for virksomheder, som bruger digitale teknologier i næsten alle aspekter af deres arbejde. Dette skaber stor interesse for at udvikle gode løsninger, der kan hjælpe virksomheder med at forbedre processer og gøre ting hurtigere, billigere og mere effektive.</p>
+
+            <p>Dette stiller store krav til designeren. Man skal ikke kun forholde sig til, hvad organisationen har behov for, men også til hvilke systemer og data de allerede har, samt hvilke nye teknologier der kunne skabe værdi. En digital løsning kan derfor defineres som en mængde eksisterende eller nye systemer, som tilsammen løser en specifik opgave eller et problem for organisationen.</p>
+
+            <h2>Kompleksiteten i simple opgaver</h2>
+
+            <p>Det viser sig ofte, at selv tilsyneladende simple opgaver gemmer enorm kompleksitet. I de fleste organisationer er det mange forskellige medarbejdere, der skal bruge løsningerne, hver med forskellige ønsker og behov til systemet.</p>
+
+            <p>For at arbejde med dette skal vi først forstå, hvad organisationen har behov for – dykke ned i det og bryde det ned i noget, vi kan arbejde med. Dernæst skal vi designe det på en måde, så det kan implementeres i IT-systemer. Her støder vi på en fundamental udfordring: oversættelsen mellem to meget forskellige sprog.</p>
+
+            <h2>Fra naturligt sprog til formelt sprog</h2>
+
+            <p>Når man taler med en organisation om deres behov, bruger de deres eget naturlige sprog. En bank taler om bankkonti, rentetilskrivninger og afkast. En butik taler om varelager, kunderabatter og leveringstider. Men IT-systemer arbejder med formelle sprog – programmeringssprog, der udspringer af matematik. De er meget stive og præcise, uden plads til fortolkning.</p>
+
+            <p>Som designere må vi tale begge sprog. Vi må forstå brugernes sprog og ønsker, og vi må forstå computerens sprog og måde at arbejde på. Indenfor forskningen taler vi om at oversætte mellem to vidensdomæner:</p>
+
+            <p><strong>Problemdomænet:</strong> Det domæne der eksisterer i virksomheden, hvor man taler i naturligt sprog om virksomhedens udfordringer og behov.</p>
+
+            <p><strong>Løsningsdomænet:</strong> Det domæne hvor vi arbejder på computerens præmisser, hvor problemet skal udtrykkes i programmeringssprog eller andre formelle sprog.</p>
+
+            <p>Opgaven går ud på at forstå, hvad der foregår i problemdomænet og bruge den viden til at lave et design i løsningsdomænet – vi oversætter fra naturligt til formelt sprog.</p>
+
+            <h2>De fire færdigheder i computationel tænkning</h2>
+
+            <p>Et af de begreber, vi bruger i forskningen for at kunne tale om denne form for oversættelse, det er computationel tænkning. Computationel tænkning dækker over nogle færdigheder som man har fundet frem til er vigtige i forhold til at være dygtig til at kunne lave den form for oversættelse. Computationel tænkning består af fire centrale færdigheder:</p>
+
+            <p><strong>1. Decomposition (Analyse):</strong> Evnen til at analysere et problem og bryde det ned i mindre, håndterbare dele. Vi tager noget fra problemdomænet og opdeler det, så det bliver til at arbejde med.</p>
+
+            <p><strong>2. Mønstergenkendelse:</strong> Når vi har brudt problemet ned, kigger vi efter mønstre. Er der ting der gentager sig? Kan vi gruppere elementer? Er der noget der kan gøres smartere?</p>
+
+            <p><strong>3. Abstraction (Abstraktion):</strong> Vi sorterer og prioriterer i de elementer, vi har identificeret. Vi vælger de ting, som er væsentlige for opgaven og fjerner det, som bare er fyld og ikke strengt nødvendigt. Vi skærer det ned til det mest basale.</p>
+
+            <p><strong>4. Algoritmedesign (Syntese):</strong> Her tager vi de elementer, der er tilbage efter vi har brudt ned, sorteret og prioriteret. Nu skal vi bygge det op igen, men denne gang inden for løsningsdomænet – i en form computeren kan forstå.</p>
+
+            <h2>Processen illustreret</h2>
+
+            <p>Processen kan visualiseres således: Vi starter med et problem i problemdomænet. Gennem decomposition bryder vi det ned i mindre bestanddele. Vi bearbejder disse data ved at kigge efter mønstre og lave abstraktion – prioritere de forskellige elementer. Til sidst laver vi syntesen gennem algoritmer, hvilket giver os vores løsning i løsningsdomænet.</p>
+
+            <p>Vi bevæger os altså fra problemdomænet med naturligt sprog til løsningsdomænet med formelt sprog. Denne oversættelse er kernen i digital design.</p>
+
+            <h2>Den skjulte kompleksitet</h2>
+
+            <p>Selvom princippet lyder simpelt – at forstå noget i den virkelige verden og oversætte det til computersystemer – så er det i praksis meget svært. Man skal forstå begge domæner godt for at kunne lave oversættelsen, og selv simple opgaver gemmer ofte enorm kompleksitet.</p>
+
+            <p>En lille virksomhed med få medarbejdere og en tilsyneladende simpel opgave kan vise sig at dække over masse underliggende kompleksitet, som er svær at arbejde med og prioritere for at kunne lave en god digital løsning.</p>
+
+            <h2>Opgave: Øv computationel tænkning</h2>
+
+            <p>For at demonstrere dette har jeg forberedt et opgavesæt, hvor I kan arbejde med at bryde simple hverdagsopgaver ned i forskellige bestanddele. Prøv at forestille jer, hvad det vil sige at skære det så meget ud i pap, at det kan bruges til at bygge et computersystem.</p>
+
+            <p>Husk at computere er noget af det dummeste, vi har. De gør præcis det, de bliver bedt om – hverken mere eller mindre. Der er ingen plads til fortolkning, ingen ræsonnement eller selvstændig tanke. Computeren gør det, den får at vide, og ikke andet.</p>
+
+            <p>Dette betyder, at man må bryde opgaver ned i meget små bidder, så selv en "dum" computer kan følge instruktionerne. Tag udgangspunkt i en hverdagshandling – helst noget simpelt. I vil forhåbentlig opdage, at det hurtigt bliver enormt komplekst og omfattende, når man begynder at bryde det ned. Hvis ikke det gør det, så spørg jer selv: Har jeg brudt det ned i små nok bidder, så selv en computer kan forstå det?</p>
+
+            <p style="text-align: center; margin-top: 30mm; font-style: italic;">Det var det, jeg gerne ville fortælle om i dag. Jeg håber, det har givet lidt inspiration og lyst til at lege med at designe systemer og tænke computationelt.</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleVideo(videoId) {
+            const videoSection = document.getElementById(videoId);
+            const button = videoSection.querySelector('.video-toggle button');
+
+            if (videoSection.classList.contains('collapsed')) {
+                videoSection.classList.remove('collapsed');
+                button.textContent = 'Skjul video';
+            } else {
+                videoSection.classList.add('collapsed');
+                button.textContent = 'Se video præsentation';
+            }
+        }
+
+        // Start with videos visible by default
+        document.addEventListener('DOMContentLoaded', function() {
+            // Videos start expanded, no action needed
+        });
+    </script>
+</body>
+</html>
